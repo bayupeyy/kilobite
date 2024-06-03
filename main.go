@@ -1,9 +1,11 @@
 package main
 
 import (
+	"kilobite/handler"
 	"kilobite/user"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -20,13 +22,24 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
-	userInput := user.RegisterUserInput{}
-	userInput.Name = "John Doe"
-	userInput.Email = "john@example.com"
-	userInput.Occupation = "Programming"
-	userInput.Password = "Karman"
+	userHandler := handler.NewUserHandler(userService)
 
-	userService.RegisterUser(userInput)
+	router := gin.Default()
+
+	api := router.Group("/api/v1")
+
+	api.POST("/users", userHandler.RegisterUser)
+
+	router.Run()
+
+	//Sementara di disable dulu karena perintah ini hanya untuk  uji coba
+	// userInput := user.RegisterUserInput{}
+	// userInput.Name = "John Doe"
+	// userInput.Email = "john@example.com"
+	// userInput.Occupation = "Programming"
+	// userInput.Password = "Karman"
+
+	//userService.RegisterUser(userInput)
 
 	// 	fmt.Println("Koneksi Berhasil")
 
