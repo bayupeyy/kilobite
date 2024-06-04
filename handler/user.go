@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"kilobite/helper"
 	"kilobite/user"
 	"net/http"
 
@@ -27,9 +28,17 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, nil)
 	}
 
-	user, err := h.userService.RegisterUser(input)
+	newUser, err := h.userService.RegisterUser(input)
+
 	if err != nil {
 		c.JSON(http.StatusBadRequest, nil)
 	}
-	c.JSON(http.StatusOK, user)
+	//Dibawah ini untuk mengubah format response
+	//Jika terdapat Token maka membutuhkan perinta token, err := h.jwtService.GenerateToken()
+	formatter := user.FormatUser(newUser, "TOKENTOKENTOKENTOKEN")
+
+	response := helper.APIResponse("Akun berhasil registrasi", http.StatusOK, "success", formatter)
+
+	//Untuk kembalikan Status
+	c.JSON(http.StatusOK, response)
 }
