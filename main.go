@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"kilobite/handler"
 	"kilobite/user"
 	"log"
@@ -21,6 +22,18 @@ func main() {
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
+
+	//Berguna untuk mencari email by user
+	userByEmail, err := userRepository.FindByEmail("bayuajike@gmail.com")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if userByEmail.ID == 0 {
+		fmt.Println("User not found")
+	} else {
+		fmt.Println(userByEmail.Name)
+	}
 
 	userHandler := handler.NewUserHandler(userService)
 

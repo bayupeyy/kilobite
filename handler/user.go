@@ -25,8 +25,12 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		response := helper.APIResponse("Register account failed", http.StatusUnprocessableEntity, "error", err.Error())
-		c.JSON(http.StatusBadRequest, response)
+
+		errors := helper.FormatValidationError(err) //Fungsi untuk mengatur format error dari helper.go
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Register account failed", http.StatusUnprocessableEntity, "error", errorMessage) //kode ini berguna untuk menampilkan format error
+		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
@@ -45,4 +49,14 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 
 	//Untuk kembalikan Status
 	c.JSON(http.StatusOK, response)
+}
+
+// Func untuk login user
+func (h *userHandler) Login(c *gin.Context) {
+	//User memasukkan input email & password
+	//Input ditangkap handler
+	//Mapping dari input user ke input struct
+	//input struct passing service
+	//di service mencari dg bantuan repository user dengan email x
+	//Mencocokan password
 }
