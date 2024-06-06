@@ -59,4 +59,36 @@ func (h *userHandler) Login(c *gin.Context) {
 	//input struct passing service
 	//di service mencari dg bantuan repository user dengan email x
 	//Mencocokan password
+
+	var input user.LoginInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Login Gagal", http.StatusUnprocessableEntity, "error", errorMessage) //kode ini berguna untuk menampilkan format error
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+
+	}
+
+	loggedinUser, err := h.userService.Login(input)
+
+	// Pengecekan error
+	if err != nil {
+		errorMessage := gin.H{"error": err.Error()}
+
+		response := helper.APIResponse("Login Gagal", http.StatusUnprocessableEntity, "error", errorMessage) //kode ini berguna untuk menampilkan format error
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	formatter := user.FormatUser(loggedinUser, "tokentokenentetoken")
+
+	response := helper.APIResponse("Berhasil Masuk", http.StatusOK, "success", formatter)
+
+	//Untuk kembalikan Status
+	c.JSON(http.StatusOK, response)
+
 }

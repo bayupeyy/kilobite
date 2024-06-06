@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"kilobite/handler"
 	"kilobite/user"
 	"log"
@@ -23,17 +22,35 @@ func main() {
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
 
+	//====================================================================
 	//Berguna untuk mencari email by user
-	userByEmail, err := userRepository.FindByEmail("bayuajike@gmail.com")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// userByEmail, err := userRepository.FindByEmail("bayuajike@gmail.com")
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// }
 
-	if userByEmail.ID == 0 {
-		fmt.Println("User not found")
-	} else {
-		fmt.Println(userByEmail.Name)
-	}
+	// if userByEmail.ID == 0 {
+	// 	fmt.Println("User not found")
+	// } else {
+	// 	fmt.Println(userByEmail.Name)
+	// }
+
+	//===================================================================
+	//Berguna untuk melakukan panggilan ketika ada User Login
+	// input := user.LoginInput{
+	// 	Email:    "pakjono@jono.comp",
+	// 	Password: "kinguyaa",
+	// }
+
+	// user, err := userService.Login(input)
+	// //Pengecekan error
+	// if err != nil {
+	// 	fmt.Println("Terjadi Kesalahan")
+	// 	fmt.Println(err.Error())
+	// }
+	// fmt.Println(user.Email)
+	// fmt.Println(user.Name)
+	//====================================================================
 
 	userHandler := handler.NewUserHandler(userService)
 
@@ -41,10 +58,13 @@ func main() {
 
 	api := router.Group("/api/v1")
 
+	//Membuat Routing
 	api.POST("/users", userHandler.RegisterUser)
+	api.POST("/sessions", userHandler.Login)
 
 	router.Run()
 
+	//====================================================================
 	//Sementara di disable dulu karena perintah ini hanya untuk  uji coba
 	// userInput := user.RegisterUserInput{}
 	// userInput.Name = "John Doe"

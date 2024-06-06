@@ -1,0 +1,5 @@
+Urutan Deploy
+
+1. Membuat Repository
+2. Buat Service dan Input
+3. Buat di Handler
