@@ -92,3 +92,11 @@ func (h *userHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+func CheckEmailAvailability(c *gin.Context) {
+	//Ada input email dari user
+	//Input email di-mapping ke struct input
+	//Struct input di-passing ke service
+	//Service akan memanggil reposiory - email apakah sudah ada atau belum
+	//Repository - db
+
+}
