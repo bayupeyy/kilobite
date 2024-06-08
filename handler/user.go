@@ -99,4 +99,17 @@ func CheckEmailAvailability(c *gin.Context) {
 	//Service akan memanggil reposiory - email apakah sudah ada atau belum
 	//Repository - db
 
+	// Berfungsi untuk menangkap input
+	var input user.CheckEmailInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		error := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		
+		response := helper.APIResponse("Login Failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
 }
