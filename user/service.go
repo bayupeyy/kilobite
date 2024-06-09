@@ -12,6 +12,9 @@ type Service interface {
 
 	//Digunakan untuk cek apakah email sudah terdaftar atau belum
 	IsEmailAvailable(input CheckEmailInput) (bool, error)
+
+	//Digunakan untuk Save Avatar
+	SaveAvatar(ID int, fileLocation string) (User, error)
 }
 
 type service struct {
@@ -81,6 +84,28 @@ func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
 		return true, nil
 	}
 
-	return false, nill
+	return false, nil
 
+}
+
+// Membuat Fungsi untuk Save Avatar
+func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
+	//Mendapatkan user berdasarkan ID
+	//Update attribute avatar name
+	//Simpan perubahan avatar file name
+
+	user, err := s.repository.FindByID(ID)
+	if err != nil {
+		return user, err
+	}
+
+	//Update atribut avatar
+	user.AvatarFileName = fileLocation
+
+	updatedUser, err := s.repository.Update(user)
+	if err != nil {
+		return updatedUser, err
+	}
+
+	return updatedUser, nil
 }

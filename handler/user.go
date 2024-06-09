@@ -92,7 +92,7 @@ func (h *userHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
-func CheckEmailAvailability(c *gin.Context) {
+func (h *userHandler) CheckEmailAvaibility(c *gin.Context) {
 	//Ada input email dari user
 	//Input email di-mapping ke struct input
 	//Struct input di-passing ke service
@@ -103,13 +103,50 @@ func CheckEmailAvailability(c *gin.Context) {
 	var input user.CheckEmailInput
 
 	err := c.ShouldBindJSON(&input)
+	//Melakukan pengecekan apakah ada error atau tidak
 	if err != nil {
-		error := helper.FormatValidationError(err)
+		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
-		
-		response := helper.APIResponse("Login Failed", http.StatusUnprocessableEntity, "error", errorMessage)
+
+		response := helper.APIResponse("Email checking failed", http.StatusUnprocessableEntity, "error", errorMessage)
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
+	IsEmailAvailable, err := h.userService.IsEmailAvailable(input)
+
+	//Melakukan pengecekan apakah ada error
+	if err != nil {
+		errorMessage := gin.H{"errors": "Server error"}
+		response := helper.APIResponse("Email checking failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	//Berfungsi untuk menampung hasil nilai dari pengecekan
+	data := gin.H{
+		"is_available": IsEmailAvailable,
+	}
+
+	//Contoh tes
+	var metaMessage string
+
+	if IsEmailAvailable {
+		metaMessage = "Email is available"
+	} else {
+		metaMessage = "Email has been registered"
+	}
+
+	response := helper.APIResponse(metaMessage, http.StatusOK, "success", data)
+	c.JSON(http.StatusOK, response)
+}
+
+// Fungsi untuk Upload avatar (gambar)
+func (h *userHandler) UploadAvatar(c *gin.Context) {
+	//Input dari user
+	//simpan gambar di folder "images/"
+	//di service kita panggil repo
+	//JWT ( Sementara menggunakan hardcore, seakan akan user yg login ID = 1)
+	//repo ambil data user yg ID = 1
+	//repo update data user simpan lokasi file
 }
