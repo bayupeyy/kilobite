@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"kilobite/helper"
 	"kilobite/user"
 	"net/http"
@@ -149,4 +150,47 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	//JWT ( Sementara menggunakan hardcore, seakan akan user yg login ID = 1)
 	//repo ambil data user yg ID = 1
 	//repo update data user simpan lokasi file
+
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload avatar images", http.StatusBadRequest, "error", data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	//harusnya dapat JWT
+	userID := 1
+
+	//Format penyimpanan file
+	// Harusnya images/namafile.png
+	// images/1-namafile.png
+	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+
+	c.SaveUploadedFile(file, path)
+
+	//Pengecekan apakah ada error atau tidak
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	_, err = h.userService.SaveAvatar(userID, path)
+
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
+
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	data := gin.H{"is_uploaded": true}
+	response := helper.APIResponse("Avatar successfuly uploaded", http.StatusOK, "success", data)
+
+	c.JSON(http.StatusOK, response)
 }
