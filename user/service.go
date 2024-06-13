@@ -15,6 +15,9 @@ type Service interface {
 
 	//Digunakan untuk Save Avatar
 	SaveAvatar(ID int, fileLocation string) (User, error)
+
+	//Digunakan untuk mendapatkan user id
+	GetUserByID(ID int) (User, error)
 }
 
 type service struct {
@@ -108,4 +111,19 @@ func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
 	}
 
 	return updatedUser, nil
+}
+
+func (s *service) GetUserByID(ID int) (User, error) {
+	user, err := s.repository.FindByID(ID)
+
+	//Pengecekan error
+	if err != nil {
+		return user, nil
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("No User found on with that ID")
+	}
+
+	return user, nil
 }

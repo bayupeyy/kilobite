@@ -40,6 +40,15 @@ func main() {
 
 	router.Run()
 
+	//Ambil nilai header Authorization : Bearer token token
+	// Dari header Authorization, kita ambil nilai tokennya saja
+	// Kita validasi token
+	// Jika token valid, kita lanjutkan ke handler
+	// kita ambil user_id
+	// Ambil user dari db berdasarkan user_id lewat service
+	// Kita set context isinya user
+	//====================================================
+
 	//Berguna untuk mencari email by user
 	// userByEmail, err := userRepository.FindByEmail("bayuajike@gmail.com")
 	// if err != nil {
