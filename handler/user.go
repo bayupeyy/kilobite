@@ -181,8 +181,11 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		return
 	}
 
+	//Perintah untuk mendapatkan informasi Id sekarang yg sedang login
+	currentUser := c.MustGet("currentUser").(user.User)
+
 	//harusnya dapat JWT
-	userID := 1
+	userID := currentUser.ID
 
 	//Format penyimpanan file
 	// Harusnya images/namafile.png
