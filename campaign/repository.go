@@ -12,9 +12,10 @@ type repository struct {
 }
 
 func NewRepository(db *gorm.DB) *repository {
-	return &repository{db: db}
+	return &repository{db}
 }
 
+//Fungsi untuk FindAll ( menemukan semua user )
 func (r *repository) FindAll() ([]Campaign, error) {
 	var campaigns []Campaign
 
