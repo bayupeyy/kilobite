@@ -33,6 +33,12 @@ func main() {
 	fmt.Println(len(campaign))
 	for _, campaign := range campaign {
 		fmt.Println(campaign.Name)
+		if len(campaign.CampaignImages) > 0 {
+			fmt.Println("Jumlah Gambar")
+			fmt.Println(len(campaign.CampaignImages))
+			fmt.Println(campaign.CampaignImages[0].FileName)
+		}
+
 	}
 
 	userService := user.NewService(userRepository)
