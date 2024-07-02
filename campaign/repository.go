@@ -12,14 +12,13 @@ type repository struct {
 }
 
 func NewRepository(db *gorm.DB) *repository {
-	return &repository{db}
+	return &repository{db: db}
 }
 
-//Fungsi untuk FindAll ( menemukan semua user )
 func (r *repository) FindAll() ([]Campaign, error) {
 	var campaigns []Campaign
 
-	err := r.db.Preload("CampaignImages", "campaign_images.is_primary = 1").Find(&campaigns).Error
+	err := r.db.Find(&campaigns).Error
 	if err != nil {
 		return campaigns, err
 	}
@@ -30,7 +29,7 @@ func (r *repository) FindAll() ([]Campaign, error) {
 //Fungsi untuk Find by user
 func (r *repository) FindByUserID(userID int) ([]Campaign, error) {
 	var campaigns []Campaign
-	err := r.db.Where("user_id = ?", userID).Preload("CampaignImages", "campaign_images.is_primary = 1").Find(&campaigns).Error
+	err := r.db.Where("user_id = ?", userID).Find(&campaigns).Error
 	if err != nil {
 		return campaigns, err
 	}

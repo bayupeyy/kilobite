@@ -26,11 +26,11 @@ func NewCampaignHandler(service campaign.Service) *campaignHandler {
 }
 
 // api/v1/campaign
-func (h *campaignHandler) GetCampaign(c *gin.Context) {
+func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 	//Tangkap parameter di handler
 	userID, _ := strconv.Atoi(c.Query("user_id"))
 
-	campaign, err := h.service.GetCampaigns(userID)
+	campaigns, err := h.service.GetCampaigns(userID)
 
 	//pengecekan error
 	if err != nil {
@@ -39,6 +39,6 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("List of campaigns", http.StatusBadRequest, "success", campaign)
+	response := helper.APIResponse("List of campaigns", http.StatusBadRequest, "success", campaign.FormatCampaigns(campaigns))
 	c.JSON(http.StatusOK, response)
 }

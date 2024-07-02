@@ -42,7 +42,7 @@ func main() {
 	api.POST("/email_checkers", userHandler.CheckEmailAvaibility)
 	api.POST("/avatars", userHandler.UploadAvatar)
 
-	api.GET("/campaign", campaignHandler.GetCampaign)
+	api.GET("/campaign", campaignHandler.GetCampaigns)
 
 	router.Run()
 
