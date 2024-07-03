@@ -12,7 +12,6 @@ import (
 
 type userHandler struct {
 	userService user.Service
-
 	//Membuat struct untuk jwt
 	authService auth.Service
 }
@@ -183,7 +182,6 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 
 	//Perintah untuk mendapatkan informasi Id sekarang yg sedang login
 	currentUser := c.MustGet("currentUser").(user.User)
-
 	//harusnya dapat JWT
 	userID := currentUser.ID
 
@@ -193,8 +191,6 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
 
 	c.SaveUploadedFile(file, path)
-
-	//Pengecekan apakah ada error atau tidak
 	if err != nil {
 		data := gin.H{"is_uploaded": false}
 		response := helper.APIResponse("Failed to upload avatar image", http.StatusBadRequest, "error", data)
