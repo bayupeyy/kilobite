@@ -31,8 +31,6 @@ func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 	userID, _ := strconv.Atoi(c.Query("user_id"))
 
 	campaigns, err := h.service.GetCampaigns(userID)
-
-	//pengecekan error
 	if err != nil {
 		response := helper.APIResponse("Error to get campaign", http.StatusBadRequest, "Error", nil)
 		c.JSON(http.StatusBadRequest, response)
