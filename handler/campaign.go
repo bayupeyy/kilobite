@@ -3,6 +3,7 @@ package handler
 import (
 	"kilobite/campaign"
 	"kilobite/helper"
+	"kilobite/user"
 	"net/http"
 	"strconv"
 
@@ -68,4 +69,37 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 	response := helper.APIResponse("Campaign detail", http.StatusOK, "success", campaign.FormatCampaignDetail(campaignDetail))
 	c.JSON(http.StatusOK, response)
 
+}
+
+//Tangkap parameter dari user ke input struct
+//ambil curent user dari jwt/handler
+
+// Membuat fungsu handler untuk CreateCampaign
+func (h *campaignHandler) CreateCampaign(c *gin.Context) {
+	var input campaign.CreateCampaignInput
+
+	err := c.ShouldBindJSON(&input)
+	//pengecekan error
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to create campaign", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(user.User)
+
+	input.User = currentUser
+
+	newCampaign, err := h.service.CreateCampaign(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to create campaign", http.StatusUnprocessableEntity, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Berhasil Membuat Campaign", http.StatusUnprocessableEntity, "success", campaign.FormatCampaign(newCampaign))
+	c.JSON(http.StatusOK, response)
 }
