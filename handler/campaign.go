@@ -103,3 +103,10 @@ func (h *campaignHandler) CreateCampaign(c *gin.Context) {
 	response := helper.APIResponse("Berhasil Membuat Campaign", http.StatusUnprocessableEntity, "success", campaign.FormatCampaign(newCampaign))
 	c.JSON(http.StatusOK, response)
 }
+
+// User masukkan input
+// Handler
+// Mapping dari input ke input struct ( ada 2 )
+// Input dari user, dan juga input yg ada di uri ( passing ke service layer )
+// Service(find campaign by id, tangkap parameter )
+// repository update data campaign
