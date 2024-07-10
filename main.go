@@ -48,6 +48,7 @@ func main() {
 	api.GET("/campaign", campaignHandler.GetCampaigns)
 	api.GET("/campaigns/:id", campaignHandler.GetCampaign)
 	api.POST("/campaigns", authMiddleware(authService, userService), campaignHandler.CreateCampaign)
+	api.PUT("/campaigns/:id", authMiddleware(authService, userService), campaignHandler.UpdateCampaign)
 
 	router.Run()
 
@@ -96,20 +97,6 @@ func main() {
 	// router.GET("/handler", handler)
 	// router.Run()
 }
-
-// func handler(c *gin.Context) {
-// 	dsn := "root:@tcp(127.0.0.1:3306)/kilobite?charset=utf8mb4&parseTime=True&loc=Local"
-// 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
-// 	if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-
-// 	var users []user.User
-// 	db.Find(&users)
-
-// 	c.JSON(http.StatusOK, users)
-// }
 
 // Fungsi untuk Middleware
 func authMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {

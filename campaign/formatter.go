@@ -107,7 +107,7 @@ func FormatCampaignDetail(campaign Campaign) CampaignDetailFormatter {
 		campaignImageFormatter := CampaignImageFormatter{}
 		campaignImageFormatter.ImageURL = image.FileName
 
-		isPrimary := false //Variabel dan dibawahnya terdapat looping berguna untuk mengubah nilai bool ke int
+		isPrimary := false //Variabel dan dibawahnya terdapat looping berguna untuk mengubah nilai int ke boolean
 
 		if image.IsPrimary == 1 {
 			isPrimary = true
