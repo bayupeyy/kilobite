@@ -106,3 +106,14 @@ func (s *service) UpdateCampaign(inputID GetCampaignDetailInput, inputData Creat
 
 	return updatedCampaign, nil
 }
+
+//Implementasi SaveCampaignImage
+func (s *service) SaveCampaignImage(inputID GetCampaignDetailInput, fileLocation string) (CampaignImage, error){
+
+	if input.IsPrimary{
+		_, err := s.repository.MarkAllImagesAsNonPrimary(input.CampaignID)
+		if err != nil {
+			return CampaignImage{}, err
+	}
+
+}
