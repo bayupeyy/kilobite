@@ -10,7 +10,7 @@ type Repository interface {
 	FindByID(ID int) (Campaign, error)
 	Save(campaign Campaign) (Campaign, error)
 	Update(campaign Campaign) (Campaign, error)
-	CreateImage(campaignImage CampaignImage) (Campaign, error)
+	CreateImage(campaignImage CampaignImage) (CampaignImage, error)
 	MarkAllImagesAsNonPrimary(campaignID int) (bool, error)
 }
 
@@ -88,7 +88,6 @@ func (r *repository) CreateImage(campaignImage CampaignImage) (CampaignImage, er
 
 // Implementasi MarkAllImagesAsNonPrimary
 func (r *repository) MarkAllImagesAsNonPrimary(campaignID int) (bool, error) {
-	//Update SET is_primary = false WHERE campaign_id = 1
 	err := r.db.Model(&CampaignImage{}).Where("campaign_id = ?", campaignID).Update("is_primary", false).Error
 
 	if err != nil {
