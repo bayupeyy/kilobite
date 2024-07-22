@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"os/user"
+	"kilobite/user"
 	"time"
 )
 
