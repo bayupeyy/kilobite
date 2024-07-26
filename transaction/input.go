@@ -1,6 +1,6 @@
 package transaction
 
-import "os/user"
+import "kilobite/user"
 
 type GetCampaignTransactionsInput struct {
 	ID   int `uri:"id" binding:"required"`
