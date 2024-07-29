@@ -71,3 +71,8 @@ func (h *transactionHandler) GetUserTransactions(c *gin.Context) {
 	response := helper.APIResponse("User's transactions", http.StatusOK, "success", transaction.FormatUserTransactions(transactions))
 	c.JSON(http.StatusOK, response)
 }
+
+// ada input dari user
+// handler tangkap input terus mapping ke input struct
+// Panggil service buat transaksi, manggil sistem midtrans
+// Panggil repository create new transaction data
