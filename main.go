@@ -5,6 +5,7 @@ import (
 	"kilobite/campaign"
 	"kilobite/handler"
 	"kilobite/helper"
+	"kilobite/payment"
 	"kilobite/transaction"
 	"kilobite/user"
 	"log"
@@ -33,17 +34,8 @@ func main() {
 	userService := user.NewService(userRepository)
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
-	transactionService := transaction.NewService(transactionRepository, campaignRepository)
-
-	user, _ := userService.GetUserByID(2)
-
-	input := transaction.CreateTransactionInput{
-		CampaignID: 2,
-		Amount:     10000000,
-		User:       user,
-	}
-
-	transactionService.CreateTransaction(input)
+	paymentService := payment.NewService()
+	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 
 	userHandler := handler.NewUserHandler(userService, authService)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
@@ -67,6 +59,7 @@ func main() {
 
 	api.GET("/campaigns/:id/transactions", authMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 	api.GET("/transactions", authMiddleware(authService, userService), transactionHandler.GetUserTransactions)
+	api.POST("/transactions", authMiddleware(authService, userService), transactionHandler.CreateTransaction)
 	router.Run()
 
 	//Ambil nilai header Authorization : Bearer token token
