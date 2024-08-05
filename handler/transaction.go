@@ -108,7 +108,7 @@ func (h *transactionHandler) CreateTransaction(c *gin.Context) {
 
 // Untuk mengirim notifikasi ke Midtrans
 func (h *transactionHandler) GetNotification(c *gin.Context) {
-	var input transaction.TransactionNotoficationInput
+	var input transaction.TransactionNotificationInput
 
 	err := c.ShouldBindJSON(&input)
 

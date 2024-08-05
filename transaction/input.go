@@ -13,7 +13,7 @@ type CreateTransactionInput struct {
 	User       user.User
 }
 
-type TransactionNotoficationInput struct {
+type TransactionNotificationInput struct {
 	TransactionStatus string `json:"transaction_status"`
 	OrderID           string `json:"order_id"`
 	PaymentType       string `json:"payment_type"`

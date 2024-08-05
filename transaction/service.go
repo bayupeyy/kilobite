@@ -17,7 +17,7 @@ type Service interface {
 	GetTransactionsByCampaignID(input GetCampaignTransactionsInput) ([]Transaction, error)
 	GetTransactionsByUserID(userID int) ([]Transaction, error)
 	CreateTransaction(input CreateTransactionInput) (Transaction, error)
-	ProcessPayment(input TransactionNotoficationInput) error
+	ProcessPayment(input TransactionNotificationInput) error
 }
 
 func NewService(repository Repository, campaignRepository campaign.Repository, paymentService payment.Service) *service {
@@ -88,7 +88,7 @@ func (s *service) CreateTransaction(input CreateTransactionInput) (Transaction, 
 	return newTransaction, nil
 }
 
-func (s *service) ProcessPayment(input TransactionNotoficationInput) error {
+func (s *service) ProcessPayment(input TransactionNotificationInput) error {
 	transaction_id, _ := strconv.Atoi(input.OrderID)
 
 	transaction, err := s.repository.GetByID(transaction_id)
